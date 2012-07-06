@@ -1,7 +1,18 @@
 #!/bin/sh
+# bin/release <build-dir>
+
+set -e
+
+BUILD_DIR=$1
+
+LIB_PATH="$BUILD_DIR/vendor/cairo/lib:$BUILD_DIR/vendor/pixman-0.26/lib"
+INCLUDE_PATH="$BUILD_DIR/vendor/cairo/include/cairo:$BUILD_DIR/vendor/pixman-0.26/include/pixman-1"
+PKG_CONFIG_PATH="$BUILD_DIR/vendor/cairo/lib/pkgconfig:$BUILD_DIR/vendor/pixman-0.26/lib/pkgconfig"
 
 cat << EOF
 ---
+build_env:
+  BUNDLE_BUILD__CAIRO: "--with-opt-lib=${LIB_PATH} --with-opt-include=${INCLUDE_PATH} --with-pkg-config=${PKG_CONFIG_PATH}"
 config_vars:
   PATH: "bin:/app/vendor/cairo/bin:/usr/local/bin:/usr/bin:/bin"
 EOF

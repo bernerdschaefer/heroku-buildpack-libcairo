@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cat << EOF
+---
+config_vars:
+  PATH: "bin:/app/vendor/libcairo/bin:/usr/local/bin:/usr/bin:/bin"
+  LD_LIBRARY_PATH: "/app/vendor/libcairo/lib"
+EOF

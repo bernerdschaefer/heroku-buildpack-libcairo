@@ -31,11 +31,3 @@ tar zxf $CACHE_DIR/$PIXMAN_NAME -C $BUILD_DIR/vendor/pixman-0.26
 echo "-----> Extracting libcairo binaries"
 mkdir -p $BUILD_DIR/vendor/cairo
 tar zxf $CACHE_DIR/$CAIRO_NAME -C $BUILD_DIR/vendor/cairo
-
-# export GEM_HOME=$BUILD_DIR/vendor/bundle/ruby/1.9.1/
-# export LD_LIBRARY_PATH=$BUILD_DIR/vendor/cairo/lib:$BUILD_DIR/vendor/pixman-0.26/lib
-# export PKG_CONFIG_PATH=$BUILD_DIR/vendor/cairo/lib/pkgconfig:$BUILD_DIR/vendor/pixman-0.26/lib/pkgconfig
-
-# gem install cairo -- \
-#   --with-opt-lib=$LD_LIBRARY_PATH \
-#   --with-opt-include="$BUILD_DIR/vendor/cairo/include/cairo:$BUILD_DIR/vendor/pixman-0.26/include/pixman-1"

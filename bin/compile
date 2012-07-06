@@ -6,30 +6,28 @@ set -e
 BUILD_DIR=$1
 CACHE_DIR=$2
 
-# config
-S3_BUCKET="heroku-buildpack-fontforge"
-S3_ROOT="http://${S3_BUCKET}.s3.amazonaws.com/"
-
 # s3 packages
-PIXMAN_FILENAME="pixman-0.26.tgz"
-CAIRO_FILENAME="cairo-1.12.2.tgz"
+PIXMAN_NAME="pixman-0.26.tgz"
+CAIRO_NAME="cairo-1.12.2.tgz"
 
-BUILDPACK_PIXMAN_PACKAGE="${S3_ROOT}/${PIXMAN_FILENAME}"
-BUILDPACK_CAIRO_PACKAGE="${S3_ROOT}/${CAIRO_FILENAME}"
+BUILDPACK_PIXMAN_PACKAGE="https://s3.amazonaws.com/heroku-buildpack-fontforge/pixman-0.26.tgz"
+BUILDPACK_CAIRO_PACKAGE="https://s3.amazonaws.com/heroku-buildpack-fontforge/cairo-1.12.2.tgz"
 
 mkdir -p $CACHE_DIR
-if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
+if ! [ -e $CACHE_DIR/$PIXMAN_NAME ]; then
   echo "-----> Fetching pixman buildpack binaries"
-  curl $BUILDPACK_PIXMAN_PACKAGE -s -o $CACHE_DIR/$PIXMAN_FILENAME
-
-  echo "-----> Fetching libcairo buildpack binaries"
-  curl $BUILDPACK_CAIRO_PACKAGE -s -o $CACHE_DIR/$CAIRO_FILENAME
+  curl $BUILDPACK_PIXMAN_PACKAGE -s -o $CACHE_DIR/$PIXMAN_NAME
 fi
 
-mkdir -p $BUILD_DIR/vendor/libcairo
+if ! [ -e $CACHE_DIR/$CAIRO_NAME ]; then
+  echo "-----> Fetching libcairo buildpack binaries"
+  curl $BUILDPACK_CAIRO_PACKAGE -s -o $CACHE_DIR/$CAIRO_NAME
+fi
 
 echo "-----> Extracting pixman binaries"
-tar zxf $CACHE_DIR/$PIXMAN_NAME -C $BUILD_DIR/vendor/libcairo
+mkdir -p $BUILD_DIR/vendor/pixman-0.26
+tar zxf $CACHE_DIR/$PIXMAN_NAME -C $BUILD_DIR/vendor/pixman-0.26
 
 echo "-----> Extracting libcairo binaries"
-tar zxf $CACHE_DIR/$CAIRO_NAME -C $BUILD_DIR/vendor/libcairo
+mkdir -p $BUILD_DIR/vendor/cairo
+tar zxf $CACHE_DIR/$CAIRO_NAME -C $BUILD_DIR/vendor/cairo
